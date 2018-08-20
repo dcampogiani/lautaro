@@ -1,3 +1,5 @@
+package com.danielecampogiani.lautaro.internal
+
 import junit.framework.TestCase.assertFalse
 import org.junit.Test
 
@@ -5,11 +7,10 @@ class ApiTest {
 
     val api = Api()
 
-
     @Test
     fun testGetInter() {
 
-        val input = "inter"
+        val input = "busan"
 
         val call = api.getTop()
         val response = call.execute()
@@ -29,6 +30,5 @@ class ApiTest {
         }.orEmpty()
 
         assertFalse(comments.isEmpty())
-
     }
 }

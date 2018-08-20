@@ -1,3 +1,5 @@
+package com.danielecampogiani.lautaro.internal
+
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -14,11 +16,11 @@ interface Api {
 
         private val instance: Retrofit by lazy {
             Retrofit.Builder()
-                    .baseUrl("https://www.reddit.com/r/soccerstreams/")
-                    .addConverterFactory(JacksonConverterFactory.create())
-                    .client(OkHttpClient.Builder()
-                            .build())
-                    .build()
+                .baseUrl("https://www.reddit.com/r/soccerstreams/")
+                .addConverterFactory(JacksonConverterFactory.create())
+                .client(OkHttpClient.Builder()
+                    .build())
+                .build()
         }
     }
 
