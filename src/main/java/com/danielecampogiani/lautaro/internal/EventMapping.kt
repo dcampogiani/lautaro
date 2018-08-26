@@ -14,12 +14,16 @@ internal fun mapPost(post: RootResponse.Data.Child): Event? {
 
     val matchResult = TITLE_REGEX.findAll(title)
 
-    val values = matchResult.toList().first().groupValues
+    val values = matchResult.toList().firstOrNull()?.groupValues.orEmpty()
 
-    val hour = values[1]
-    val minutes = values[2]
-    val homeTeam = values[3]
-    val awayTeam = values[4]
+    return if (values.isEmpty()) {
+        null
+    } else {
+        val hour = values[1]
+        val minutes = values[2]
+        val homeTeam = values[3]
+        val awayTeam = values[4]
 
-    return Event("$hour : $minutes", homeTeam, awayTeam, post.data.url.orEmpty())
+        Event("$hour : $minutes", homeTeam, awayTeam, post.data.url.orEmpty())
+    }
 }
