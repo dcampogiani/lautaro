@@ -1,13 +1,15 @@
 package com.danielecampogiani.lautaro.internal
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
+import kotlinx.coroutines.experimental.Deferred
 import okhttp3.OkHttpClient
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Url
 
-interface Api {
+internal interface Api {
 
     companion object {
         operator fun invoke(retrofit: Retrofit = instance): Api {
@@ -17,6 +19,7 @@ interface Api {
         private val instance: Retrofit by lazy {
             Retrofit.Builder()
                 .baseUrl("https://www.reddit.com/r/soccerstreams/")
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(JacksonConverterFactory.create())
                 .client(OkHttpClient.Builder()
                     .build())
@@ -25,8 +28,8 @@ interface Api {
     }
 
     @GET("top/.json")
-    fun getTop(): Call<RootResponse>
+    fun getTop(): Deferred<Response<RootResponse>>
 
     @GET
-    fun getDetails(@Url url: String): Call<List<PostDetail>>
+    fun getDetails(@Url url: String): Deferred<Response<List<PostDetail>>>
 }

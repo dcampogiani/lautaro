@@ -26,4 +26,28 @@ NSWF | Disable Ad-block | Clicks: 3 | Mobile Compatibility= Yes"""
 
 NSWF | Disable Ad-block | Clicks: 3 | Mobile Compatibility= Yes""", output)
     }
+
+    @Test
+    fun addOneAceLink() {
+        val input = """English [NBC] [1080p] acestream://f31ffcafb40097acee1a1193cf77b37b6185be96"""
+
+        val output = input.addAceLinks()
+        assertEquals("""English [NBC] [1080p] <a href="acestream://f31ffcafb40097acee1a1193cf77b37b6185be96">acestream://f31ffcafb40097acee1a1193cf77b37b6185be96</a>""", output)
+    }
+
+    @Test
+    fun addTwoAceLinks() {
+        val input = """English [NBC] [1080p] acestream://f31ffcafb40097acee1a1193cf77b37b6185be96 [NBC] [540p] acestream://03dd1fc19ef40fcee343155143d3212f0749f0e8"""
+        val output = input.addAceLinks()
+        assertEquals("""English [NBC] [1080p] <a href="acestream://f31ffcafb40097acee1a1193cf77b37b6185be96">acestream://f31ffcafb40097acee1a1193cf77b37b6185be96</a> [NBC] [540p] <a href="acestream://03dd1fc19ef40fcee343155143d3212f0749f0e8">acestream://03dd1fc19ef40fcee343155143d3212f0749f0e8</a>""", output)
+    }
+
+    @Test
+    fun testMapChild() {
+        val child = PostDetail.Data.Child(PostDetail.Data.Child.Data(
+            """**HD** | [Watford vs Crystal Palace **HD** Live](http://buffstreamz.com/watch/soccer-stream.php) | MISR:1mbps | NBC | Clicks:4 | Mobile: Yes | English **HD** | Acestream | English [NBC] [1080p] acestream://f31ffcafb40097acee1a1193cf77b37b6185be96 [NBC] [540p] acestream://03dd1fc19ef40fcee343155143d3212f0749f0e8 [Sky] [1080p] acestream://ef48558600b89ddba78267d103f3016de7180a1d"""
+        ))
+        val result = mapChild(child)
+        assertEquals("""**HD** | [Watford vs Crystal Palace **HD** Live](<a href="http://buffstreamz.com/watch/soccer-stream.php">http://buffstreamz.com/watch/soccer-stream.php</a>) | MISR:1mbps | NBC | Clicks:4 | Mobile: Yes | English **HD** | Acestream | English [NBC] [1080p] <a href="acestream://f31ffcafb40097acee1a1193cf77b37b6185be96">acestream://f31ffcafb40097acee1a1193cf77b37b6185be96</a> [NBC] [540p] <a href="acestream://03dd1fc19ef40fcee343155143d3212f0749f0e8">acestream://03dd1fc19ef40fcee343155143d3212f0749f0e8</a> [Sky] [1080p] <a href="acestream://ef48558600b89ddba78267d103f3016de7180a1d">acestream://ef48558600b89ddba78267d103f3016de7180a1d</a>""", result!!.text)
+    }
 }
